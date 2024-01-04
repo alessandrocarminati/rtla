@@ -817,3 +817,55 @@ int auto_house_keeping(cpu_set_t *monitored_cpus)
 
 	return 1;
 }
+
+/**
+ * parse_cpu_features - parses Resource Control features out of cpuinfo
+ *
+ * Returns bitwise representation of these features
+ */
+int parse_cpu_features() {
+	FILE* file = fopen("/proc/cpuinfo", "r");
+	if (file == NULL) {
+		perror("Error opening file");
+		exit(EXIT_FAILURE);
+	}
+
+	int features = 0;
+	char line[CPU_LINE_BUF_SIZE];
+
+	while (fgets(line, sizeof(line), file)) {
+		if (strstr(line, "rdt_a")) {
+			features |= RTLA_CPUF_RDT_A;
+		}
+		if (strstr(line, "cat_l3")) {
+			features |= RTLA_CPUF_CAT_L3;
+		}
+		if (strstr(line, "cat_l2")) {
+			features |= RTLA_CPUF_CAT_L2;
+		}
+		if (strstr(line, "cdp_l3")) {
+			features |= RTLA_CPUF_CDP_L3;
+		}
+		if (strstr(line, "cdp_l2")) {
+			features |= RTLA_CPUF_CDP_L2;
+		}
+		if (strstr(line, "cqm_llc")) {
+			features |= RTLA_CPUF_CQM_LLC;
+		}
+		if (strstr(line, "cqm_occup_llc")) {
+			features |= RTLA_CPUF_CQM_OCCUP_LLC;
+		}
+		if (strstr(line, "cqm_mbm_total")) {
+			features |= RTLA_CPUF_CQM_MBM_TOTAL;
+		}
+		if (strstr(line, "cqm_mbm_local")) {
+			features |= RTLA_CPUF_CQM_MBM_LOCAL;
+		}
+		if (strstr(line, "mba")) {
+			features |= RTLA_CPUF_MBA;
+		}
+	}
+
+	fclose(file);
+	return features;
+}

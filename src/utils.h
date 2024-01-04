@@ -10,6 +10,20 @@
 #define BUFF_U64_STR_SIZE	24
 #define MAX_PATH		1024
 
+#define CPU_LINE_BUF_SIZE       2048
+
+//Resource Control feature related constants
+#define RTLA_CPUF_RDT_A         0x1
+#define RTLA_CPUF_CAT_L3        0x2
+#define RTLA_CPUF_CAT_L2        0x4
+#define RTLA_CPUF_CDP_L3        0x8
+#define RTLA_CPUF_CDP_L2        0x10
+#define RTLA_CPUF_CQM_LLC       0x20
+#define RTLA_CPUF_CQM_OCCUP_LLC 0x40
+#define RTLA_CPUF_CQM_MBM_TOTAL 0x80
+#define RTLA_CPUF_CQM_MBM_LOCAL 0x100
+#define RTLA_CPUF_MBA           0x200
+
 #define container_of(ptr, type, member)({			\
 	const typeof(((type *)0)->member) *__mptr = (ptr);	\
 	(type *)((char *)__mptr - offsetof(type, member)) ; })
